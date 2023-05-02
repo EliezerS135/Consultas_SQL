@@ -1,0 +1,25 @@
+# Esse é um codigo que cria uma tabela a partir de uma consulta que seleciona todas as candidatas mulheres e cria uma coluna que diz se ela ja foi eleita ou não.
+
+CREATE TABLE `asymmetric-bank-384117.123qwe.candidatas_mulheres_table` AS 
+SELECT *,
+  CASE WHEN id_candidato_bd IN (SELECT id_candidato_bd 
+      FROM `basedosdados.br_tse_eleicoes.resultados_candidato`
+        WHERE resultado != 'nao eleito'
+        GROUP BY 1) THEN 'sim'
+    ELSE 'nao' END AS eleito
+  FROM `basedosdados.br_tse_eleicoes.candidatos`
+  WHERE genero = 'feminino'
+ 
+ 
+A ideia é criar uma tabela dessa tambem para os candidatos homens e comparar se a quantidade de mulheres que se elegem e ganham é parecida com a dos homens
+e responder a pergunta:
+  -   mulheres são eleitas tanto quanto homens ?
+
+O 'CASE' é usado para criar a coluna que diz se foi eleito ou não, o que facilitaria muito na hora de fazer um dashboard com essa tabela.
+
+fiz tambem uma subquery para comparar com a coluna 'resultado' que era de outra tabela.
+
+Essa mesma estrutura pode ser usada para comparar os candidatos de etnias, estados, partidos e idade diferentes.
+
+Os dados para a realização dessa consulta se encontra publico no site: https://basedosdados.org/dataset/br-tse-eleicoes?bdm_table=bens_candidato
+  
